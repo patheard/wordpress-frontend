@@ -1,20 +1,22 @@
-<header>
-    <nav>
-        <ul>
-            {{#each menuItems}}
-                <li>
-                    <a href="{{url}}">{{title.rendered}}</a>
-                    {{#if children}}
-                        <ul>
-                            {{#each children}}
-                                <li>
-                                    <a href="{{url}}">{{title.rendered}}</a>
-                                </li>
-                            {{/each}}
-                        </ul>
-                    {{/if}}
-                </li>
-            {{/each}}
-        </ul>
-    </nav>
-</header>
+<gcds-header lang-href="#" skip-to-href="#main-content">
+    <gcds-top-nav slot="menu" label="Main menu" alignment="right">
+        <gcds-nav-link href="/" slot="home">PCS Superset</gcds-nav-link>
+        {{#each menuItems}}
+            {{#if children}}
+                <gcds-nav-group  open-trigger="{{title.rendered}}" menu-label="{{title.rendered}}">
+                    <gcds-nav-link href="{{url}}" {{#if (eq title.rendered ../page.title.rendered)}}current{{/if}}>{{title.rendered}}</gcds-nav-link>
+                    {{#each children}}
+                        <gcds-nav-link href="{{url}}">{{title.rendered}}</gcds-nav-link>
+                    {{/each}}
+                </gcds-nav-group>
+            {{else}}
+                <gcds-nav-link href="{{url}}" {{#if (eq title.rendered ../page.title.rendered)}}current{{/if}}>{{title.rendered}}</gcds-nav-link>
+            {{/if}}
+        {{/each}}
+    </gcds-top-nav>
+
+    <gcds-breadcrumbs slot="breadcrumb">
+        <gcds-breadcrumbs-item href="/">PCS Superset</gcds-breadcrumbs-item>
+    </gcds-breadcrumbs>
+
+</gcds-header>

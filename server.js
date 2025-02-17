@@ -13,9 +13,8 @@ const ALLOWED_PATH_SEGMENTS = parseInt(process.env.ALLOWED_PATH_SEGMENTS) || 3;
 const PATH_MATCH = Array(ALLOWED_PATH_SEGMENTS).fill('/:path').map((p, i) => p + (i + 1) + '?').join('');
 
 const hbsHelpers = {
-    capitalize: (text) => text.charAt(0).toUpperCase() + text.slice(1),
-    stripTags: (html) => html.replace(/<[^>]*>?/gm, ""),
-    truncate: (text, length) => text.length > length ? text.substring(0, length) + "..." : text,
+    dateFormat: (date, lang) => new Date(date).toLocaleDateString(`${lang}-CA`, { year: "numeric", month: "numeric", day: "numeric" }),
+    eq: (a, b) => a == b,
 };
 
 // Configure Handlebars
@@ -24,9 +23,6 @@ app.engine("hbs", engine({
     helpers: hbsHelpers,
 }));
 app.set("view engine", "hbs");
-
-// Serve static files (CSS, images)
-app.use(express.static("public"));
 
 // Fetch WordPress content & render the page
 app.get(PATH_MATCH, async (req, res) => {
@@ -73,7 +69,6 @@ app.get(PATH_MATCH, async (req, res) => {
 
 // Start the server
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
-
 
 const createMenu = (menuItems) => {
     const menuTree = [];

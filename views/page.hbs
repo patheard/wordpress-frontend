@@ -1,2 +1,5 @@
-<h1>{{page.title.rendered}}</h1>
-{{{page.content.rendered}}}
+<gcds-heading tag="h1">{{page.title.rendered}}</gcds-heading>
+
+<gcds-text>{{{page.content.rendered}}}</gcds-text>
+
+<gcds-date-modified>{{dateFormat page.modified page.lang}}</gcds-date-modified>
