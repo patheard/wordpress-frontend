@@ -1,0 +1,20 @@
+<header>
+    <nav>
+        <ul>
+            {{#each menuItems}}
+                <li>
+                    <a href="{{url}}">{{title.rendered}}</a>
+                    {{#if children}}
+                        <ul>
+                            {{#each children}}
+                                <li>
+                                    <a href="{{url}}">{{title.rendered}}</a>
+                                </li>
+                            {{/each}}
+                        </ul>
+                    {{/if}}
+                </li>
+            {{/each}}
+        </ul>
+    </nav>
+</header>
