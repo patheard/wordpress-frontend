@@ -1,10 +1,9 @@
-<gcds-header lang-href="#" skip-to-href="#main-content">
+<gcds-header {{#if langSwapSlug}}lang-href="/{{langSwapSlug}}?lang={{langSwap}}"{{/if}} skip-to-href="#main-content">
     <gcds-top-nav slot="menu" label="Main menu" alignment="right">
-        <gcds-nav-link href="/" slot="home">PCS Superset</gcds-nav-link>
+        <gcds-nav-link href="/" slot="home">{{siteName}}</gcds-nav-link>
         {{#each menuItems}}
             {{#if children}}
                 <gcds-nav-group  open-trigger="{{title.rendered}}" menu-label="{{title.rendered}}">
-                    <gcds-nav-link href="{{url}}" {{#if (eq title.rendered ../page.title.rendered)}}current{{/if}}>{{title.rendered}}</gcds-nav-link>
                     {{#each children}}
                         <gcds-nav-link href="{{url}}">{{title.rendered}}</gcds-nav-link>
                     {{/each}}
@@ -16,7 +15,9 @@
     </gcds-top-nav>
 
     <gcds-breadcrumbs slot="breadcrumb">
-        <gcds-breadcrumbs-item href="/">PCS Superset</gcds-breadcrumbs-item>
+    {{#unless isHome}}
+        <gcds-breadcrumbs-item href="/">{{siteName}}</gcds-breadcrumbs-item>
+    {{/unless}}
     </gcds-breadcrumbs>
 
 </gcds-header>

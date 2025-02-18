@@ -2,64 +2,64 @@ const express = require("express");
 const axios = require("axios");
 const { engine } = require("express-handlebars");
 
-const app = express();
+require("dotenv").config();
 
-const PORT = parseInt(process.env.PORT) || 3000;
+const PORT = parseInt(process.env.PORT) || 5000;
 const WORDPRESS_URL = process.env.WORDPRESS_URL;
 const WORDPRESS_USER = process.env.WORDPRESS_USER;
 const WORDPRESS_PASSWORD = process.env.WORDPRESS_PASSWORD;
 const WORDPRESS_AUTH = Buffer.from(`${WORDPRESS_USER}:${WORDPRESS_PASSWORD}`).toString("base64");
-const ALLOWED_PATH_SEGMENTS = parseInt(process.env.ALLOWED_PATH_SEGMENTS) || 3;
-const PATH_MATCH = Array(ALLOWED_PATH_SEGMENTS).fill('/:path').map((p, i) => p + (i + 1) + '?').join('');
+const PATH_SEGMENTS_ALLOWED = parseInt(process.env.PATH_SEGMENTS_ALLOWED) || 3;
+const PATH_MATCH = Array(PATH_SEGMENTS_ALLOWED).fill('/:path').map((p, i) => p + (i + 1) + '?').join('');
 
+const app = express();
 const hbsHelpers = {
-    dateFormat: (date, lang) => new Date(date).toLocaleDateString(`${lang}-CA`, { year: "numeric", month: "numeric", day: "numeric" }),
+    dateFormat: (date) => new Date(date).toLocaleDateString(`en-CA`, { year: "numeric", month: "numeric", day: "numeric" }),
     eq: (a, b) => a == b,
 };
 
-// Configure Handlebars
 app.engine("hbs", engine({
     extname: "hbs",
     helpers: hbsHelpers,
 }));
 app.set("view engine", "hbs");
 
-// Fetch WordPress content & render the page
+// Main route for all content requests
 app.get(PATH_MATCH, async (req, res) => {
+    const { lang = "en" } = req.query;
     const pathSegments = Object.values(req.params).filter(Boolean);
-    const lastSegment = pathSegments[pathSegments.length - 1] || "";
+    const lastSegment = pathSegments[pathSegments.length - 1] || "home";
 
     let pageRes = null;
 
     try {
-        // Home page, determine which page to show
-        if (lastSegment === "") {
-            const settingsRes = await axios.get(`${WORDPRESS_URL}/wp-json/wp/v2/settings`, {
-                headers: {
-                    Authorization: `Basic ${WORDPRESS_AUTH}`
-                }
-            });
-            pageRes = await axios.get(`${WORDPRESS_URL}/wp-json/wp/v2/pages/${settingsRes.data.page_on_front}`);
-        // Normal page, retrieve by slug
-        } else {
-            pageRes = await axios.get(`${WORDPRESS_URL}/wp-json/wp/v2/pages?slug=${lastSegment}`);
-        }
+        // Get the page content
+        pageRes = await axios.get(`${WORDPRESS_URL}/wp-json/wp/v2/pages?slug=${lastSegment}&lang=${lang}`);
 
-        // Fetch the menu
+        // Get the menu
         const menusRes = await axios.get(`${WORDPRESS_URL}/wp-json/wp/v2/menus`, {
             headers: {
                 Authorization: `Basic ${WORDPRESS_AUTH}`
             }
         });
-        const menuItemsRes = await axios.get(`${WORDPRESS_URL}/wp-json/wp/v2/menu-items?menus=9`, {
+        const menu = menusRes.data.find((menu) => menu.slug === `top-menu-${lang}`);
+        if (!menu) {
+            return res.status(404).send("Menu not found");
+        }
+        const menuItemsRes = await axios.get(`${WORDPRESS_URL}/wp-json/wp/v2/menu-items?menus=${menu.id}`, {
             headers: {
                 Authorization: `Basic ${WORDPRESS_AUTH}`
             }
         });
 
+        const page = pageRes?.data?.length ? pageRes.data[0] : null;
         res.render("page", {
-            page: pageRes.data.length ? pageRes.data[0] : pageRes.data,
+            isHome: lastSegment === "",
+            langSwap: lang === "en" ? "fr" : "en",
+            langSwapSlug: lang === "en" ? page?.slug_fr : page?.slug_en,
             menuItems: createMenu(menuItemsRes.data),
+            page: page,
+            siteName: lang === "en" ? process.env.SITE_NAME_EN : process.env.SITE_NAME_FR,
         });
     } catch (error) {
         console.log(error);
@@ -68,7 +68,7 @@ app.get(PATH_MATCH, async (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server: http://localhost:${PORT}\nWordPress: ${WORDPRESS_URL}\nPath match: ${PATH_MATCH}`));
 
 const createMenu = (menuItems) => {
     const menuTree = [];
