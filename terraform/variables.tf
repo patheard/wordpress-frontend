@@ -3,6 +3,12 @@ variable "billing_code" {
   type        = string
 }
 
+variable "domain" {
+  description = "The domain name to use for the site"
+  type        = string
+
+}
+
 variable "env" {
   description = "The target environment"
   type        = string
