@@ -4,7 +4,7 @@ module "wordpress_frontend_lambda" {
   ecr_arn   = aws_ecr_repository.wordpress_frontend.arn
   image_uri = "${aws_ecr_repository.wordpress_frontend.repository_url}:latest"
 
-  memory                 = 1024
+  memory                 = 4096
   timeout                = 120
   enable_lambda_insights = true
 

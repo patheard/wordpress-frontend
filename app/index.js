@@ -14,18 +14,18 @@ const PATH_MATCH = Array(PATH_SEGMENTS_ALLOWED).fill('/:path').map((p, i) => p +
 
 const app = express();
 const hbsHelpers = {
-    dateFormat: (date) => new Date(date).toLocaleDateString(`en-CA`, { year: "numeric", month: "numeric", day: "numeric" }),
+    dateFormat: (date) => new Date(date).toLocaleDateString("en-CA", { year: "numeric", month: "numeric", day: "numeric" }),
     eq: (a, b) => a == b,
     updateMarkup: (content) => {
         return content ? content
             .replace(/<details class="alert alert-([^"]+)" open><summary class="h3"><h3>([^<]+)<\/h3><\/summary>(.+)<\/details>/g, '<section class="mt-300 mb-300"><gcds-notice type="$1" notice-title-tag="h2" notice-title="$2"><gcds-text>$3</gcds-text></gcds-notice></section>')
             .replace(/<div class="wp-block-button"><a class="wp-block-button__link[^"]+" href="([^"]+)">([^<]+)<\/a><\/div>/g, '<gcds-button type="link" href="$1">$2</gcds-button>')
-            .replace(/<p[^>]+>/g, '<p class="mt-300 mb-300">')
-            .replace(/<ul[^>]+>/g, '<ul class="list-disc mt-300 mb-300">')
-            .replace(/<ol[^>]+>/g, '<ol class="list-decimal mt-300 mb-300">')
-            .replace(/<hr[^>]+>/g, '<hr class="mt-300 mb-300">') : "";
+            .replace(/<details class="wp-block-cds-snc-accordion"><summary>([^<]+)<\/summary>\n*(.+)\n*<\/details>/g, '<gcds-details details-title="$1">$2</gcds-details>')
+            : "";
     }
 };
+
+app.use(express.static("public"));
 
 app.engine("hbs", engine({
     extname: "hbs",
