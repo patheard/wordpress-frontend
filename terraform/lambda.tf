@@ -4,11 +4,14 @@ module "wordpress_frontend_lambda" {
   ecr_arn   = aws_ecr_repository.wordpress_frontend.arn
   image_uri = "${aws_ecr_repository.wordpress_frontend.repository_url}:latest"
 
+  architectures          = ["arm64"]
   memory                 = 4096
   timeout                = 120
   enable_lambda_insights = true
 
   environment_variables = {
+    MENU_ID_EN         = var.menu_id_en
+    MENU_ID_FR         = var.menu_id_fr
     SITE_NAME_EN       = var.site_name_en
     SITE_NAME_FR       = var.site_name_fr
     WORDPRESS_URL      = var.wordpress_url

@@ -1,4 +1,6 @@
 <gcds-header {{#if langSwapSlug}}lang-href="/{{langSwapSlug}}?lang={{langSwap}}"{{/if}} skip-to-href="#main-content">
+    
+    {{#if menuItems}}
     <gcds-top-nav slot="menu" label="Main menu" alignment="right">
         <gcds-nav-link href="/" slot="home">{{siteName}}</gcds-nav-link>
         {{#each menuItems}}
@@ -13,6 +15,7 @@
             {{/if}}
         {{/each}}
     </gcds-top-nav>
+    {{/if}}
 
     <gcds-breadcrumbs slot="breadcrumb">
     {{#unless isHome}}

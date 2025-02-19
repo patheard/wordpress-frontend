@@ -8,6 +8,16 @@ variable "env" {
   type        = string
 }
 
+variable "menu_id_en" {
+  description = "The English menu to display"
+  type        = string
+}
+
+variable "menu_id_fr" {
+  description = "The French menu to display"
+  type        = string
+}
+
 variable "region" {
   description = "The AWS region to deploy resources"
   type        = string

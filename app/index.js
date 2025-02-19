@@ -26,7 +26,6 @@ const hbsHelpers = {
 };
 
 app.use(express.static("public"));
-
 app.engine("hbs", engine({
     extname: "hbs",
     helpers: hbsHelpers,
@@ -36,6 +35,7 @@ app.set("view engine", "hbs");
 // Main route for all content requests
 app.get(PATH_MATCH, async (req, res) => {
     const { lang = "en" } = req.query;
+    const menuId = lang === "en" ? process.env.MENU_ID_EN : process.env.MENU_ID_FR;
     const pathSegments = Object.values(req.params).filter(Boolean);
     const lastSegment = pathSegments[pathSegments.length - 1] || "home";
 
@@ -46,33 +46,54 @@ app.get(PATH_MATCH, async (req, res) => {
         pageRes = await axios.get(`${WORDPRESS_URL}/wp-json/wp/v2/pages?slug=${lastSegment}&lang=${lang}`);
 
         // Get the menu
-        const menusRes = await axios.get(`${WORDPRESS_URL}/wp-json/wp/v2/menus`, {
-            headers: {
-                Authorization: `Basic ${WORDPRESS_AUTH}`
-            }
-        });
-        const menu = menusRes.data.find((menu) => menu.slug === `top-menu-${lang}`);
-        if (!menu) {
-            return res.status(404).send("Menu not found");
-        }
-        const menuItemsRes = await axios.get(`${WORDPRESS_URL}/wp-json/wp/v2/menu-items?menus=${menu.id}`, {
+        const menuItemsRes = await axios.get(`${WORDPRESS_URL}/wp-json/wp/v2/menu-items?menus=${menuId}`, {
             headers: {
                 Authorization: `Basic ${WORDPRESS_AUTH}`
             }
         });
 
         const page = pageRes?.data?.length ? pageRes.data[0] : null;
-        res.render("page", {
-            isHome: lastSegment === "",
-            langSwap: lang === "en" ? "fr" : "en",
-            langSwapSlug: lang === "en" ? page?.slug_fr : page?.slug_en,
-            menuItems: createMenu(menuItemsRes.data),
-            page: page,
-            siteName: lang === "en" ? process.env.SITE_NAME_EN : process.env.SITE_NAME_FR,
-        });
+
+        if (!page) {
+            res.status(404).render("error", {
+                menuItems: createMenu(menuItemsRes.data),
+                siteName: lang === "en" ? process.env.SITE_NAME_EN : process.env.SITE_NAME_FR,
+                page: {
+                    lang: lang,
+                    title: {
+                        rendered: "404"
+                    },
+                    error: {
+                        title: lang == "en" ? "Not found" : "Non trouvé",
+                        message: lang == "en" ? "The page you're looking for could not be found" : "La page que vous cherchez est introuvable."
+                    }
+                }
+            });
+        } else {
+            res.render("page", {
+                isHome: lastSegment === "",
+                langSwap: lang === "en" ? "fr" : "en",
+                langSwapSlug: lang === "en" ? page?.slug_fr : page?.slug_en,
+                menuItems: createMenu(menuItemsRes.data),
+                page: page,
+                siteName: lang === "en" ? process.env.SITE_NAME_EN : process.env.SITE_NAME_FR,
+            });
+        }
     } catch (error) {
         console.log(error);
-        res.status(500).send("Error fetching content from WordPress");
+        res.status(500).render("error", {
+            siteName: lang === "en" ? process.env.SITE_NAME_EN : process.env.SITE_NAME_FR,
+            page: {
+                lang: lang,
+                title: {
+                    rendered: "500"
+                },
+                error: {
+                    title: lang == "en" ? "Server error" : "Erreur du serveur",
+                    message: lang == "en" ? "There was a server error.  Please try again." : "Il y a eu une erreur du serveur.  Veuillez réessayer."
+                }
+            }
+        });
     }
 });
 
