@@ -12,12 +12,15 @@ npm start
 ```
 
 ## Terraform
-You will need to build a Docker image to run, which is currently exected to be an arm64 image.
+You will need to build a Docker image to run, which is currently exected to be an `arm64` image.
 ```sh
-docker build -t wordpress-frontend -f ./app/Dockerfile --platform linux/arm64 ./app 
+docker build \
+    --tag wordpress-frontend \
+    --file ./app/Dockerfile \
+    --platform linux/arm64 ./app 
 ```
 
-You can do it as amd64 as well if you update the `terraform/lambda.tf` resource's architectures.
+You can do it as `amd64` as well if you update the `terraform/lambda.tf` resource's [architectures](https://github.com/patheard/wordpress-frontend/blob/dfa9dfc6d26b62396fdb5f00b8c2e1dd4d615c59/terraform/lambda.tf#L7).
 
 ```sh
 cd terraform
