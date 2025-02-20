@@ -1,4 +1,4 @@
-# WordPress frontend
+# WordPress frontend proxy
 A small app that uses the WordPress API to load content and serve a site.  The pages are rendered using handlebars.
 
 Also includes the Terraform to run this as a Lambda function behind a CloudFront distribution.
