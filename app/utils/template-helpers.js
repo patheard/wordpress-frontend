@@ -1,3 +1,5 @@
+const config = require("../config");
+
 const templateHelpers = {
   dateFormat: (date) =>
     new Date(date).toLocaleDateString("en-CA", {
@@ -8,6 +10,8 @@ const templateHelpers = {
   eq: (a, b) => a == b,
   updateMarkup: (content) => {
     if (!content) return "";
+
+    const siteUrl = new RegExp(`${config.wordpress.url}`, "g");
 
     // Updates the WordPress content to match with the expected markup
     // for the Design System components.
@@ -23,7 +27,12 @@ const templateHelpers = {
       .replace(
         /<details class="wp-block-cds-snc-accordion"><summary>([^<]+)<\/summary>\n*(.+)\n*<\/details>/g,
         '<gcds-details details-title="$1">$2</gcds-details>',
-      );
+      )
+      .replace(
+        /<div class="wp-block-cds-snc-accordion__content">(.+)<\/div>/g,
+        "<gcds-text>$1</gcds-text>",
+      )
+      .replace(siteUrl, "");
   },
 };
 
