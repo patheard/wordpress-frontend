@@ -31,7 +31,7 @@ resource "aws_cloudfront_distribution" "wordpress_frontend" {
     viewer_protocol_policy = "redirect-to-https"
 
     min_ttl     = 1
-    default_ttl = 3600  # 1 hour
+    default_ttl = 86400 # 24 hours
     max_ttl     = 86400 # 24 hours
     compress    = true
   }

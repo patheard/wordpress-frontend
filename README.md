@@ -28,4 +28,4 @@ terraform init
 terraform apply
 ```
 
-The above will fail on first run since the Docker image will not be in the new Elastic Container Registry (ECR).  Push your Docker image up and re-run the apply to fix.
+:warning: The above will fail on first run since the Docker image will not be in the new Elastic Container Registry (ECR).  Push your Docker image up and re-run the apply to fix.
