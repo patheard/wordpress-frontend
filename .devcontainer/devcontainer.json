@@ -1,5 +1,5 @@
 {
-	"name": "wordpress-frontend",
+	"name": "wordpress-frontend-proxy",
 	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
 	"containerEnv": {
 		"SHELL": "/bin/zsh"
@@ -8,9 +8,7 @@
 		"ghcr.io/devcontainers/features/aws-cli:1": {
 			"version": "latest"
 		},
-    	"ghcr.io/devcontainers/features/node:1": {
-			"version": "22"
-		},
+    	"ghcr.io/shyim/devcontainers-features/bun:0": {},
 		"ghcr.io/devcontainers/features/terraform:1": {
 			"version": "1.10.5",
 			"tflint": "latest"

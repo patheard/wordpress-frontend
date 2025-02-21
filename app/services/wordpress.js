@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 class WordPressService {
   constructor(config) {
     this.config = config;
@@ -7,10 +5,11 @@ class WordPressService {
 
   async getPage(slug, lang) {
     try {
-      const response = await axios.get(
+      const response = await fetch(
         `${this.config.url}/wp-json/wp/v2/pages?slug=${slug}&lang=${lang}`,
       );
-      return response.data.length ? response.data[0] : null;
+      const page = await response.json();
+      return page.length ? page[0] : null;
     } catch (error) {
       console.error("Error fetching page:", error.message);
       throw error;
@@ -22,7 +21,7 @@ class WordPressService {
       lang === "en" ? this.config.menuIds.en : this.config.menuIds.fr;
 
     try {
-      const response = await axios.get(
+      const response = await fetch(
         `${this.config.url}/wp-json/wp/v2/menu-items?menus=${menuId}`,
         {
           headers: {
@@ -30,7 +29,7 @@ class WordPressService {
           },
         },
       );
-      return this.createMenuTree(response.data);
+      return this.createMenuTree(await response.json());
     } catch (error) {
       console.error("Error fetching menu:", error.message);
       throw error;

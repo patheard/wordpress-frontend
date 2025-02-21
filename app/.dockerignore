@@ -1,4 +1,6 @@
-.env*
-.gitignore
 node_modules
-Dockerfile
+Dockerfile*
+.dockerignore
+.git
+.gitignore
+.env*
