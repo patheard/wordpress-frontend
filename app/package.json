@@ -1,5 +1,5 @@
 {
-  "name": "platform",
+  "name": "wordpress-frontend-proxy",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -7,10 +7,10 @@
     "format": "prettier --write '**/*.js'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": ["WordPress", "proxy"],
+  "author": "Pat Heard",
+  "license": "MIT",
+  "description": "Serves as a proxy for the WordPress API.",
   "dependencies": {
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
