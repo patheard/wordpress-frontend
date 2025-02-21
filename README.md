@@ -1,14 +1,16 @@
 # WordPress frontend proxy :arrows_counterclockwise:
-A small app that uses the WordPress API to load content and serve a site.  The pages are rendered using handlebars.
+A small app that uses the WordPress API to load content and serve a site.  The pages are rendered using Handlebars.
 
 Also includes the Terraform to run this as a Lambda function behind a CloudFront distribution.
 
 ## Running locally
 ```sh
+# Install bun or use the devcontainer
+# https://bun.sh/docs/installation
 cd app
 cp .env.example .env # and set your values
-npm install
-npm start
+bun install
+bun start
 ```
 
 ## Terraform
