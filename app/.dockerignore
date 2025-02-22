@@ -1,5 +1,7 @@
+bun.lock
 node_modules
 Dockerfile*
+package.json
 .dockerignore
 .git
 .gitignore
