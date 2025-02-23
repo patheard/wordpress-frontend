@@ -9,7 +9,7 @@ export const options = {
 };
 
 export default function () {
-  const url = "https://your-site-url.com";
+  const url = __ENV.URL;
   const res = http.get(url);
 
   check(res, {
