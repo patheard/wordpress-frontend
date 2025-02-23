@@ -12,4 +12,4 @@ COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.9.0 /lambda-adapter /opt
 COPY . .
 
 ENV PORT=5000
-ENTRYPOINT [ "bun", "run", "index.js" ]
+ENTRYPOINT [ "bun", "run", "index.ts" ]

@@ -1,14 +1,14 @@
 import config from "../config";
 
 const templateHelpers = {
-  dateFormat: (date) =>
+  dateFormat: (date: string): string =>
     new Date(date).toLocaleDateString("en-CA", {
       year: "numeric",
       month: "numeric",
       day: "numeric",
     }),
-  eq: (a, b) => a == b,
-  updateMarkup: (content) => {
+  eq: (a: string, b: string): boolean => a == b,
+  updateMarkup: (content: string | undefined): string => {
     if (!content) return "";
 
     const siteUrl = new RegExp(`${config.wordpress.url}`, "g");
