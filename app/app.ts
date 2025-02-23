@@ -1,12 +1,12 @@
-import express from "express";
+import express, { Express } from "express";
 import { engine } from "express-handlebars";
 import templateHelpers from "./utils/template-helpers";
 import pageRoutes from "./routes/pages";
 
-export function createApp() {
+export function createApp(): Express {
   const app = express();
 
-  // Configure hanldlebars
+  // Configure handlebars
   app.engine(
     "hbs",
     engine({

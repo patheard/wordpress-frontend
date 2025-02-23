@@ -1,5 +1,20 @@
+// Mark these environment variables as required.
+declare module "bun" {
+  interface Env {
+    WORDPRESS_URL: string;
+    WORDPRESS_USER: string;
+    WORDPRESS_PASSWORD: string;
+    MENU_ID_EN: string;
+    MENU_ID_FR: string;
+    SITE_NAME_EN: string;
+    SITE_NAME_FR: string;
+    PORT: string;
+    PATH_SEGMENTS_ALLOWED: string;
+  }
+}
+
 const config = {
-  port: parseInt(process.env.PORT) || 5000,
+  port: parseInt(process.env.PORT || "5000"),
   wordpress: {
     url: process.env.WORDPRESS_URL,
     user: process.env.WORDPRESS_USER,
@@ -19,7 +34,8 @@ const config = {
     },
   },
   routing: {
-    pathSegmentsAllowed: parseInt(process.env.PATH_SEGMENTS_ALLOWED) || 3,
+    pathSegmentsAllowed: parseInt(process.env.PATH_SEGMENTS_ALLOWED || "3"),
+    pathPattern: "/:path1/:path2/:path3?",
   },
 };
 
