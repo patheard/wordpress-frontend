@@ -31,4 +31,4 @@ config.routing.pathPattern = Array(config.routing.pathSegmentsAllowed)
   .map((p, i) => p + (i + 1) + "?")
   .join("");
 
-module.exports = config;
+export default config;

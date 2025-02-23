@@ -1,9 +1,9 @@
-const express = require("express");
-const router = express.Router();
-const WordPressService = require("../services/wordpress");
-const config = require("../config");
+import express from "express";
+import WordPressService from "../services/wordpress";
+import config from "../config";
 
 const wordPressService = new WordPressService(config.wordpress);
+const router = express.Router();
 
 router.get(config.routing.pathPattern, async (req, res) => {
   const { lang = "en" } = req.query;
@@ -35,4 +35,4 @@ router.get(config.routing.pathPattern, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

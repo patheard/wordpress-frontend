@@ -1,9 +1,9 @@
-const express = require("express");
-const { engine } = require("express-handlebars");
-const templateHelpers = require("./utils/template-helpers");
-const pageRoutes = require("./routes/pages");
+import express from "express";
+import { engine } from "express-handlebars";
+import templateHelpers from "./utils/template-helpers";
+import pageRoutes from "./routes/pages";
 
-function createApp() {
+export function createApp() {
   const app = express();
 
   // Configure hanldlebars
@@ -21,5 +21,3 @@ function createApp() {
 
   return app;
 }
-
-module.exports = createApp;

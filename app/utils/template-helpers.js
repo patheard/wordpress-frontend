@@ -1,4 +1,4 @@
-const config = require("../config");
+import config from "../config";
 
 const templateHelpers = {
   dateFormat: (date) =>
@@ -36,4 +36,4 @@ const templateHelpers = {
   },
 };
 
-module.exports = templateHelpers;
+export default templateHelpers;

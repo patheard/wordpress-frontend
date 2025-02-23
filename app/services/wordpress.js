@@ -1,4 +1,4 @@
-class WordPressService {
+export default class WordPressService {
   constructor(config) {
     this.config = config;
   }
@@ -58,5 +58,3 @@ class WordPressService {
     return menuTree;
   }
 }
-
-module.exports = WordPressService;
