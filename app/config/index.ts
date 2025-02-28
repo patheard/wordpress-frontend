@@ -13,7 +13,7 @@ declare module "bun" {
   }
 }
 
-const config = {
+export const config = {
   port: parseInt(process.env.PORT || "5000"),
   wordpress: {
     url: process.env.WORDPRESS_URL,
@@ -46,5 +46,3 @@ config.routing.pathPattern = Array(config.routing.pathSegmentsAllowed)
   .fill("/:path")
   .map((p, i) => p + (i + 1) + "?")
   .join("");
-
-export default config;
