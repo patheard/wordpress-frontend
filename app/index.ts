@@ -1,9 +1,12 @@
 import config from "./config";
-import { createApp } from "./app";
+import { serve } from "bun";
+import { fetch } from "./routes/pages";
 
-const app = createApp();
-
-app.listen(config.port, () => {
-  console.log(`Server: http://localhost:${config.port}`);
-  console.log(`WordPress: ${config.wordpress.url}`);
+serve({
+  fetch,
+  port: config.port,
+  development: process.env.NODE_ENV !== "production",
 });
+
+console.log(`Server: http://localhost:${config.port}`);
+console.log(`WordPress: ${config.wordpress.url}`);

@@ -7,13 +7,15 @@
     "format": "prettier --write '**/*.ts' '**/*.js'",
     "perf": "k6 run tests/performance.js -e URL=https://your-url.ca --iterations 100"
   },
-  "keywords": ["WordPress", "proxy"],
+  "keywords": [
+    "WordPress",
+    "proxy"
+  ],
   "author": "Pat Heard",
   "license": "MIT",
   "description": "Serves as a proxy for the WordPress API.",
   "dependencies": {
-    "express": "^4.21.2",
-    "express-handlebars": "^8.0.1"
+    "handlebars": "^4.7.8"
   },
   "devDependencies": {
     "prettier": "^3.5.1"
