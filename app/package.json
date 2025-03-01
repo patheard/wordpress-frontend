@@ -2,8 +2,9 @@
   "name": "wordpress-frontend-proxy",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "bun run index.js",
+    "start": "bun --bun run index.js",
     "format": "prettier --write '**/*.ts' '**/*.js'",
     "perf": "k6 run tests/performance.js -e URL=https://your-url.ca --iterations 100"
   },
@@ -15,9 +16,12 @@
   "license": "MIT",
   "description": "Serves as a proxy for the WordPress API.",
   "dependencies": {
-    "handlebars": "^4.7.8"
+    "eta": "^3.5.0"
   },
   "devDependencies": {
     "prettier": "^3.5.1"
+  },
+  "engines": {
+    "bun": "^1.2.4"
   }
 }
