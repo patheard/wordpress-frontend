@@ -1,10 +1,11 @@
 {
   "name": "wordpress-frontend-proxy",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "bun --bun run index.js",
+    "compile": "bun build --compile --minify --sourcemap index.ts --outfile myapp",
     "format": "prettier --write '**/*.ts' '**/*.js'",
     "perf": "k6 run tests/performance.js -e URL=https://your-url.ca --iterations 100"
   },
@@ -12,7 +13,7 @@
     "WordPress",
     "proxy"
   ],
-  "author": "Pat Heard",
+  "author": "Pat Heard, Tim Arney",
   "license": "MIT",
   "description": "Serves as a proxy for the WordPress API.",
   "dependencies": {
