@@ -1,14 +1,14 @@
-FROM oven/bun:1.2.4-slim AS install
+FROM oven/bun:1.2.2-slim AS install
 
 RUN mkdir -p /tmp/build
 WORKDIR /tmp/build
 
 COPY . .
 RUN bun install --frozen-lockfile --production
-RUN bun --env-file=.env build --compile --minify --sourcemap ./index.ts --outfile myapp
+RUN bun --env-file=.env build --bytecode --compile --minify --sourcemap ./index.ts --outfile myapp
 RUN chmod +x myapp
 
-FROM oven/bun:1.0.29-distroless AS release
+FROM oven/bun:1.2.2-distroless AS release
 WORKDIR /var/task
 
 COPY --from=install /tmp/build/myapp ./myapp
