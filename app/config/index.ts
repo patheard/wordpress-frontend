@@ -13,28 +13,30 @@ declare module "bun" {
   }
 }
 
+const ENV = process.env;
+
 export const config = {
-  port: parseInt(process.env.PORT || "5000"),
+  port: parseInt(ENV.PORT || "5000"),
   wordpress: {
-    url: process.env.WORDPRESS_URL,
-    user: process.env.WORDPRESS_USER,
-    password: process.env.WORDPRESS_PASSWORD,
+    url: ENV.WORDPRESS_URL,
+    user: ENV.WORDPRESS_USER,
+    password: ENV.WORDPRESS_PASSWORD,
     get authToken() {
       return Buffer.from(`${this.user}:${this.password}`).toString("base64");
     },
     menuIds: {
-      en: process.env.MENU_ID_EN,
-      fr: process.env.MENU_ID_FR,
+      en: ENV.MENU_ID_EN,
+      fr: ENV.MENU_ID_FR,
     },
   },
   site: {
     names: {
-      en: process.env.SITE_NAME_EN,
-      fr: process.env.SITE_NAME_FR,
+      en: ENV.SITE_NAME_EN,
+      fr: ENV.SITE_NAME_FR,
     },
   },
   routing: {
-    pathSegmentsAllowed: parseInt(process.env.PATH_SEGMENTS_ALLOWED || "3"),
+    pathSegmentsAllowed: parseInt(ENV.PATH_SEGMENTS_ALLOWED || "3"),
     pathPattern: "/:path1/:path2/:path3?",
   },
 };
