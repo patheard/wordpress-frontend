@@ -5,6 +5,15 @@ import templateHelpers from "../utils/template-helpers";
 
 const wordPressService = new WordPressService(config.wordpress);
 
+const prefechMenus = async () => {
+  await Promise.all([
+    wordPressService.getMenu("en"),
+    wordPressService.getMenu("fr"),
+  ]);
+};
+
+prefechMenus();
+
 export const fetch = async (req: Request) => {
   const url = new URL(req.url);
 

@@ -19,6 +19,8 @@ interface MenuItem {
 }
 
 class WordPressService {
+  private menuCache: { [lang: string]: MenuItem[] } = {};
+
   constructor(private config: WordPressConfig) {
     this.config = config;
   }
@@ -37,6 +39,10 @@ class WordPressService {
   }
 
   async getMenu(lang: string): Promise<MenuItem[]> {
+    if (this.menuCache[lang]) {
+      return this.menuCache[lang];
+    }
+
     const menuId =
       lang === "en" ? this.config.menuIds.en : this.config.menuIds.fr;
     try {
@@ -49,7 +55,9 @@ class WordPressService {
         },
       );
       const menuItems: MenuItem[] = await response.json();
-      return this.createMenuTree(menuItems);
+      const menuTree = this.createMenuTree(menuItems);
+      this.menuCache[lang] = menuTree;
+      return menuTree;
     } catch (error: any) {
       console.error("Error fetching menu:", error.message);
       throw error;
