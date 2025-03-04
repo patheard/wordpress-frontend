@@ -13,7 +13,6 @@ WORKDIR /var/task
 
 COPY --from=install /tmp/build/myapp ./myapp
 COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.9.0 /lambda-adapter /opt/extensions/lambda-adapter
-COPY ./public ./public
 
 ENV PORT=8500
 EXPOSE 8500

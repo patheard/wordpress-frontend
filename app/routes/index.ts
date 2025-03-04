@@ -17,6 +17,11 @@ prefechMenus();
 export const fetch = async (req: Request) => {
   const url = new URL(req.url);
 
+  // Handle favicon requests
+  if (url.pathname === "/favicon.ico") {
+    return new Response(null, { status: 204 });
+  }
+
   const lang = url.searchParams.get("lang") || "en";
   const pathSegments: string[] = url.pathname.split("/").filter(Boolean);
   const lastSegment: string = pathSegments[pathSegments.length - 1] || "home";
